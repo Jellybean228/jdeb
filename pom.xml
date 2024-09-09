@@ -8,7 +8,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <maven.scope>provided</maven.scope>
     <maven.version>3.9.8</maven.version>
-    <maven.plugin.version>3.13.1</maven.plugin.version>
+    <maven.plugin.version>3.15.0</maven.plugin.version>
     <plexus.sec.version>1.4</plexus.sec.version>
   </properties>
   <prerequisites>
@@ -87,6 +87,7 @@
     <contributor><name>Sergio Fernández</name></contributor>
     <contributor><name>Steven Bower</name></contributor>
     <contributor><name>Martin Chalupa</name></contributor>
+    <contributor><name>Jeremy Norris</name></contributor>
   </contributors>
   <scm>
     <connection>scm:git:git://github.com:tcurdt/jdeb.git</connection>
@@ -122,15 +123,15 @@
       <scope>${maven.scope}</scope>
     </dependency>
     <dependency>
+      <!-- maven-archiver must be compile scope, see #736 -->
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
       <version>3.6.2</version>
-      <scope>${maven.scope}</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.10.14</version>
+      <version>1.10.15</version>
     </dependency>
     <dependency>
       <groupId>org.sonatype.plexus</groupId>
@@ -145,13 +146,13 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <version>1.26.2</version>
+      <version>1.27.1</version>
     </dependency>
     <dependency>
       <!-- this should not be required but somehow compress introduced the dep -->
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.15.0</version>
+      <version>3.17.0</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
@@ -208,12 +209,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -233,7 +234,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -248,12 +249,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
+          <version>3.20.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>3.10.0</version>
           <configuration>
             <source>${maven.compiler.source}</source>
             <doclint>none</doclint>
@@ -263,22 +264,22 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.6.2</version>
+          <version>3.7.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.24.0</version>
+          <version>3.25.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jxr-plugin</artifactId>
-          <version>3.4.0</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -288,7 +289,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.2.4</version>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -477,13 +478,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.0</version>
         <configuration>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <debug>false</debug>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
           <streamLogs>true</streamLogs>
           <settingsFile>src/it/settings.xml</settingsFile>
+          <postBuildHookScript>verify</postBuildHookScript>
           <goals>
             <goal>clean</goal>
             <goal>package</goal>
@@ -584,7 +586,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.8.0</version>
+            <version>3.10.0</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -597,7 +599,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.4</version>
+            <version>3.2.5</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
